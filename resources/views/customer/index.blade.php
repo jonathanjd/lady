@@ -23,7 +23,6 @@
                             <th>Edad</th>
                             <th>Correo</th>
                             <th>Teléfono</th>
-                            <th>Servicio</th>
                             <th style="width: 18%">Opciones</th>
                           </tr>
                         </thead>
@@ -44,9 +43,6 @@
                                     </td>
                                     <td>
                                         {{ $customer->phone }}
-                                    </td>
-                                    <td>
-                                        {{ $customer->service }}
                                     </td>
                                     <td>
                                         <a class="btn btn-primary" href="{{ route('customer.show', $customer) }}"><i class="fas fa-eye"></i></a>
