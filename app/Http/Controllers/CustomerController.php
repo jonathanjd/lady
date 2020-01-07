@@ -52,7 +52,6 @@ class CustomerController extends Controller
         $myCustomer->email = $request->email;
         $myCustomer->documentid = $request->documentid;
         $myCustomer->phone = $request->phone;
-        $myCustomer->service = $request->service;
         $myCustomer->age = $request->age;
 
         $myCustomer->save();

@@ -17,7 +17,6 @@
                         <p><strong>Correo:</strong>{{ $customer->email }}</p>
                         <p><strong>Documento de Identificación:</strong> {{ $customer->documentid }}</p>
                         <p><strong>Teléfono:</strong> {{ $customer->phone }}</p>
-                        <p><strong>Servicio:</strong> {{ $customer->service }}</p>
                     </div>
                     <div class="card-footer">
                         <a href="{{ route('customer.index') }}">Regresar</a>

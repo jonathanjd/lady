@@ -99912,7 +99912,8 @@ function (_Component) {
       weekDay: [],
       hours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
       showModal: false,
-      currentDay: '01',
+      currentDayName: '',
+      currentDay: '',
       currentHour: ''
     };
     _this.handleAddWeek = _this.handleAddWeek.bind(_assertThisInitialized(_this));
@@ -99924,9 +99925,46 @@ function (_Component) {
 
   _createClass(Calendar, [{
     key: "handleOpenModal",
-    value: function handleOpenModal() {
+    value: function handleOpenModal(value1, value2) {
+      console.log(value1);
+      console.log(value2);
+      var myDayName = '';
+
+      switch (value1.day()) {
+        case 0:
+          myDayName = 'Domingo';
+          break;
+
+        case 1:
+          myDayName = 'Lunes';
+          break;
+
+        case 2:
+          myDayName = 'Martes';
+          break;
+
+        case 3:
+          myDayName = 'Miercoles';
+          break;
+
+        case 4:
+          myDayName = 'Jueves';
+          break;
+
+        case 5:
+          myDayName = 'Viernes';
+          break;
+
+        case 6:
+          myDayName = 'Sabado';
+          break;
+      }
+
       this.setState({
-        showModal: true
+        showModal: true,
+        currentDayName: myDayName,
+        currentDay: value1.format('DD/MM/YYYY'),
+        currentHour: value2 + ':00'
       });
     }
   }, {
@@ -99991,20 +100029,58 @@ function (_Component) {
       var _this2 = this;
 
       var myThDay = this.state.weekDay.map(function (value) {
+        var myDayName = '';
+
+        switch (value.day()) {
+          case 0:
+            myDayName = 'Domingo';
+            break;
+
+          case 1:
+            myDayName = 'Lunes';
+            break;
+
+          case 2:
+            myDayName = 'Martes';
+            break;
+
+          case 3:
+            myDayName = 'Miercoles';
+            break;
+
+          case 4:
+            myDayName = 'Jueves';
+            break;
+
+          case 5:
+            myDayName = 'Viernes';
+            break;
+
+          case 6:
+            myDayName = 'Sabado';
+            break;
+        }
+
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
           key: value.format('DD-MM-YYYY')
-        }, value.format('DD-MM-YYYY'));
+        }, myDayName, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), value.format('DD-MM-YYYY'));
       });
-      var myTD = this.state.weekDay.map(function (value) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
-          key: value,
-          onClick: _this2.handleOpenModal
+
+      var myTD = function myTD(hour) {
+        return _this2.state.weekDay.map(function (value) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
+            key: value,
+            onClick: function onClick() {
+              return _this2.handleOpenModal(value, hour);
+            }
+          });
         });
-      });
+      };
+
       var myTableBody = this.state.hours.map(function (value) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
           key: value
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, value + ':00'), myTD);
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, value + ':00'), myTD(value));
       });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Container"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Col"], {
         className: 'text-center'
@@ -100027,7 +100103,13 @@ function (_Component) {
         onHide: this.handleCloseModal
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Header, {
         closeButton: true
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Title, null, "Info Citas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Body, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Container"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Col"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, "Crear Citas"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Col"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, "Mis Citas"))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Footer, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Title, null, "Info Cita | ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Badge"], {
+        variant: "primary"
+      }, this.state.currentDayName), " - ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Badge"], {
+        variant: "success"
+      }, this.state.currentHour), " - ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Badge"], {
+        variant: "dark"
+      }, this.state.currentDay))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Body, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Container"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Col"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, "Crear Citas"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Col"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, "Mis Citas"))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"].Footer, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
         block: true,
         variant: "secondary",
         onClick: this.handleCloseModal

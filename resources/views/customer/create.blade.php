@@ -41,10 +41,6 @@
                           <input name="documentid" type="text" class="form-control" id="documentid">
                         </div>
                         <div class="form-group">
-                          <label for="service">Servicio</label>
-                          <input name="service" type="text" class="form-control" id="service">
-                        </div>
-                        <div class="form-group">
                           <label for="phone">Teléfono</label>
                           <input name="phone" type="text" class="form-control" id="phone">
                         </div>
