@@ -2,18 +2,35 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Button, Container, Row, Col, Table, Modal, Badge } from 'react-bootstrap';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 export default class Calendar extends Component {
 
     constructor(props) {
         super(props);
+
+        let myArrayDay = [];
+        for (let index = 0; index < 7; index++) {
+
+            let dayStartWeek = moment().startOf('week');
+            let myDate = dayStartWeek.add(index, 'days');
+
+            myArrayDay.push(myDate);
+
+        }
+
         this.state = {
-            weekDay: [],
+            weekDay: myArrayDay,
             hours: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],
             showModal: false,
             currentDayName: '',
             currentDay: '',
-            currentHour: ''
+            currentHour: '',
+            myCalendar: [],
+            startDate: moment().startOf('week').format('YYYY-MM-DD'),
+            endDate: moment().endOf('week').format('YYYY-MM-DD'),
+            myInfoCalendar: ''
         };
 
         this.handleAddWeek = this.handleAddWeek.bind(this);
@@ -23,9 +40,6 @@ export default class Calendar extends Component {
     }
 
     handleOpenModal(value1, value2) {
-
-        console.log(value1);
-        console.log(value2);
 
         let myDayName = '';
             switch (value1.day()) {
@@ -114,17 +128,24 @@ export default class Calendar extends Component {
     }
 
     componentDidMount() {
-        let myArrayDay = [];
-        for (let index = 0; index < 7; index++) {
 
-            let dayStartWeek = moment().startOf('week');
-            let myDate = dayStartWeek.add(index, 'days');
+        this.fetchCalendar();
 
-            myArrayDay.push(myDate);
+    }
 
-        }
-        this.setState({
-            weekDay: myArrayDay
+    fetchCalendar() {
+
+        let {startDate, endDate} = this.state;
+
+        fetch('/api/list-calendar/' + startDate + '/' + endDate)
+            .then(response => {
+                return response.json();
+            })
+            .then(myJson => {
+
+                this.setState({
+                    myCalendar: myJson.listCalendar
+                });
         });
     }
 
@@ -168,10 +189,30 @@ export default class Calendar extends Component {
         });
 
         let myTD = (hour) => {
-            return this.state.weekDay.map(value => {
-                return (
-                    <td key={value} onClick={() => this.handleOpenModal(value, hour)}>
 
+            let { myCalendar } = this.state;
+
+            let itemValue = '';
+
+            return this.state.weekDay.map(value => {
+
+                let showData = myCalendar.map(item => {
+                    let myDate = moment(item.date).format('DD-MM-YYYY');
+                    let myHour = item.hour;
+                    let myDateTD = value.format('DD-MM-YYYY');
+
+                    if (myDate === myDateTD && myHour === '0' + hour + ':00:00' ) {
+                        itemValue = item;
+                        return <FontAwesomeIcon icon={faUser} key={item.id} color="green" />;
+                    } else {
+
+                        return '';
+                    }
+                });
+
+                return (
+                    <td key={value} onClick={() => this.handleOpenModal(value, hour)} className="text-center">
+                        { showData }
                     </td>
                 )
             });
@@ -186,8 +227,6 @@ export default class Calendar extends Component {
                 </tr>
             )
         });
-
-
 
         return (
             <Container>
@@ -231,7 +270,7 @@ export default class Calendar extends Component {
                             <hr />
                             <Row>
                                 <Col>
-                                    <h5>Mis Citas</h5>
+                                    <h5>Mi Citas</h5>
                                 </Col>
                             </Row>
 
