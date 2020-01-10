@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Button, Container, Row, Col, Table, Modal, Badge } from 'react-bootstrap';
+import { Button, Container, Row, Col, Table, Modal, Badge, Card } from 'react-bootstrap';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
@@ -30,7 +30,12 @@ export default class Calendar extends Component {
             myCalendar: [],
             startDate: moment().startOf('week').format('YYYY-MM-DD'),
             endDate: moment().endOf('week').format('YYYY-MM-DD'),
-            myInfoCalendar: ''
+            myInfoCalendar: {
+                name: '',
+                service: '',
+                email: '',
+                phone: ''
+            }
         };
 
         this.handleAddWeek = this.handleAddWeek.bind(this);
@@ -41,6 +46,9 @@ export default class Calendar extends Component {
 
     handleOpenModal(value1, value2) {
 
+        console.log('Open Modal')
+        console.log(value1)
+        console.log(value2)
         let myDayName = '';
             switch (value1.day()) {
                 case 0:
@@ -67,12 +75,46 @@ export default class Calendar extends Component {
 
             }
 
+        this.fetchMyCalendar('0' + value2 + ':00:00', value1.format('YYYY-MM-DD'));
+
         this.setState({
             showModal: true,
             currentDayName: myDayName,
             currentDay: value1.format('DD/MM/YYYY'),
             currentHour: value2 + ':00'
         });
+    }
+
+    fetchMyCalendar(myHour, myDate) {
+
+        fetch('/api/calendar/' + myHour + '/' + myDate)
+            .then(response => {
+                return response.json();
+            })
+            .then(myJson => {
+
+                if (myJson.getCalendar === null) {
+                    this.setState({
+                        myInfoCalendar: {
+                            name: '',
+                            email: '',
+                            phone: '',
+                            service: ''
+                        }
+                    });
+                } else {
+                    this.setState({
+                        myInfoCalendar: {
+                            name: myJson.getCalendar.customer.name,
+                            email: myJson.getCalendar.customer.email,
+                            phone: myJson.getCalendar.customer.phone,
+                            service: myJson.getCalendar.service
+                        }
+                    });
+                }
+
+        });
+
     }
 
     handleCloseModal() {
@@ -228,6 +270,21 @@ export default class Calendar extends Component {
             )
         });
 
+        let myInfoContent = null;
+
+        if (this.state.myInfoCalendar.name === '') {
+            myInfoContent = <div className="text-center">
+                                <p>No Tienes Citas</p>
+                            </div>;
+        } else {
+            myInfoContent = <div>
+                                <p><strong>Cliente:</strong> { this.state.myInfoCalendar.name }</p>
+                                <p><strong>Teléfono:</strong> { this.state.myInfoCalendar.phone }</p>
+                                <p><strong>Correo:</strong> { this.state.myInfoCalendar.email }</p>
+                                <p><strong>Servicio</strong> { this.state.myInfoCalendar.service }</p>
+                            </div>;
+        }
+
         return (
             <Container>
                 <Row>
@@ -270,7 +327,12 @@ export default class Calendar extends Component {
                             <hr />
                             <Row>
                                 <Col>
-                                    <h5>Mi Citas</h5>
+                                <Card>
+                                    <Card.Header>Mi Citas</Card.Header>
+                                    <Card.Body>
+                                        { this.state.myInfoCalendar !== null ? myInfoContent : '' }
+                                    </Card.Body>
+                                </Card>
                                 </Col>
                             </Row>
 

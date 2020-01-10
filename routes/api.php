@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/calendar/{myHour}/{myDate}', function($myHour, $myDate) {
 
-    $getCalendar = Calendar::where('hour', $myHour)->where('date', $myDate)->first();
+    $getCalendar = Calendar::with('customer')->where('hour', $myHour)->where('date', $myDate)->first();
 
     return response(['getCalendar' => $getCalendar], 200);
 
