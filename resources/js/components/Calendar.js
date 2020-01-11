@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Button, Container, Row, Col, Table, Modal, Badge, Card } from 'react-bootstrap';
+import { Button, Container, Row, Col, Table, Modal, Badge, Card, Form } from 'react-bootstrap';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
@@ -35,6 +35,10 @@ export default class Calendar extends Component {
                 service: '',
                 email: '',
                 phone: ''
+            },
+            myForm: {
+                customerID: '1',
+                service: ''
             }
         };
 
@@ -42,6 +46,21 @@ export default class Calendar extends Component {
         this.handleLessWeek = this.handleLessWeek.bind(this);
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
+        this.hanldeChangeInput = this.hanldeChangeInput.bind(this);
+    }
+
+    handleSave() {
+        console.log('HandleSave');
+    }
+
+    handleChangeSelect(e) {
+        this.setState({ myForm:{customerID: e.target.value, service: this.state.myForm.service} });
+    }
+
+    hanldeChangeInput(e) {
+        this.setState({ myForm:{customerID: this.state.myForm.customerID, service: e.target.value} });
     }
 
     handleOpenModal(value1, value2) {
@@ -321,7 +340,28 @@ export default class Calendar extends Component {
                         <Container>
                             <Row>
                                 <Col>
-                                    <h5>Crear Citas</h5>
+                                    <Card>
+                                        <Card.Header>Crear Citas</Card.Header>
+                                        <Card.Body>
+                                            <Form.Group controlId="myFormCustomer">
+                                                <Form.Label>Mis Clientes</Form.Label>
+                                                <Form.Control as={'select'} value={this.state.myForm.customerID} onChange={this.handleChangeSelect}>
+                                                    <option value={'1'}>1</option>
+                                                    <option value={'2'}>2</option>
+                                                    <option value={'3'}>3</option>
+                                                    <option value={'4'}>4</option>
+                                                    <option value={'5'}>5</option>
+                                                </Form.Control>
+                                            </Form.Group>
+                                            <Form.Group controlId="myFormService">
+                                                <Form.Label>Servicio</Form.Label>
+                                                <Form.Control type="text" placeholder="Servicio" value={this.state.myForm.service} onChange={this.hanldeChangeInput} />
+                                            </Form.Group>
+                                            <Button onClick={this.handleSave} variant="primary" type="button">
+                                                Guardar
+                                            </Button>
+                                        </Card.Body>
+                                    </Card>
                                 </Col>
                             </Row>
                             <hr />
