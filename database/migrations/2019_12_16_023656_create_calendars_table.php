@@ -15,12 +15,11 @@ class CreateCalendarsTable extends Migration
     {
         Schema::create('calendars', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('service');
             $table->time('hour');
             $table->date('date');
 
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('users');
+            $table->unsignedBigInteger('date_id');
+            $table->foreign('date_id')->references('id')->on('dates');
 
             $table->timestamps();
         });

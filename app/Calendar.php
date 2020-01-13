@@ -8,12 +8,12 @@ class Calendar extends Model
 {
     //
     protected $fillable = [
-        'service', 'hour', 'date', 'customer_id'
+        'hour', 'date', 'date_id'
     ];
 
-    public function customer()
+    public function mydate()
     {
         # code...
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Date::class, 'date_id');
     }
 }

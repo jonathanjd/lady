@@ -23,4 +23,6 @@ Route::get('/admin-panel', 'AdminPanelController@index')->name('admin.panel');
 
 Route::resource('customer', 'CustomerController');
 
+Route::resource('date', 'DateController');
+
 Route::resource('calendar', 'CalendarController');

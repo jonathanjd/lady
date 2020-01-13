@@ -5,6 +5,7 @@ import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 
+
 export default class Calendar extends Component {
 
     constructor(props) {
@@ -27,15 +28,13 @@ export default class Calendar extends Component {
             currentDayName: '',
             currentDay: '',
             currentHour: '',
+            myCustomer: [],
             myCalendar: [],
+            showToast: false,
+            myToastText: '',
             startDate: moment().startOf('week').format('YYYY-MM-DD'),
             endDate: moment().endOf('week').format('YYYY-MM-DD'),
-            myInfoCalendar: {
-                name: '',
-                service: '',
-                email: '',
-                phone: ''
-            },
+            myInfoCalendar: [],
             myForm: {
                 customerID: '1',
                 service: ''
@@ -51,8 +50,22 @@ export default class Calendar extends Component {
         this.hanldeChangeInput = this.hanldeChangeInput.bind(this);
     }
 
+    handleShowToast() {
+        this.setState({
+            showToast: !this.state.showToast
+        });
+    }
+
     handleSave() {
         console.log('HandleSave');
+        this.setState({
+            showModal: false
+        });
+
+    }
+
+    handleStoreCalendar() {
+
     }
 
     handleChangeSelect(e) {
@@ -68,6 +81,11 @@ export default class Calendar extends Component {
         console.log('Open Modal')
         console.log(value1)
         console.log(value2)
+
+        this.setState(
+            { myForm:{customerID: '1', service: ''} }
+        );
+
         let myDayName = '';
             switch (value1.day()) {
                 case 0:
@@ -112,26 +130,9 @@ export default class Calendar extends Component {
             })
             .then(myJson => {
 
-                if (myJson.getCalendar === null) {
-                    this.setState({
-                        myInfoCalendar: {
-                            name: '',
-                            email: '',
-                            phone: '',
-                            service: ''
-                        }
-                    });
-                } else {
-                    this.setState({
-                        myInfoCalendar: {
-                            name: myJson.getCalendar.customer.name,
-                            email: myJson.getCalendar.customer.email,
-                            phone: myJson.getCalendar.customer.phone,
-                            service: myJson.getCalendar.service
-                        }
-                    });
-                }
-
+                this.setState({
+                    myInfoCalendar: myJson.getCalendar
+                });
         });
 
     }
@@ -191,6 +192,21 @@ export default class Calendar extends Component {
     componentDidMount() {
 
         this.fetchCalendar();
+        this.fetchCustomer();
+    }
+
+    fetchCustomer() {
+
+        fetch('/api/list-customer')
+            .then(response => {
+                return response.json();
+            })
+            .then(myJson => {
+
+                this.setState({
+                    myCustomer: myJson.listCustomer
+                });
+        });
 
     }
 
@@ -264,7 +280,7 @@ export default class Calendar extends Component {
 
                     if (myDate === myDateTD && myHour === '0' + hour + ':00:00' ) {
                         itemValue = item;
-                        return <FontAwesomeIcon icon={faUser} key={item.id} color="green" />;
+                        return <FontAwesomeIcon style={{'padding': '1'}} icon={faUser} key={item.id} color="green" />;
                     } else {
 
                         return '';
@@ -291,18 +307,29 @@ export default class Calendar extends Component {
 
         let myInfoContent = null;
 
-        if (this.state.myInfoCalendar.name === '') {
+        if (!this.state.myInfoCalendar.length > 0) {
             myInfoContent = <div className="text-center">
                                 <p>No Tienes Citas</p>
                             </div>;
         } else {
-            myInfoContent = <div>
-                                <p><strong>Cliente:</strong> { this.state.myInfoCalendar.name }</p>
-                                <p><strong>Teléfono:</strong> { this.state.myInfoCalendar.phone }</p>
-                                <p><strong>Correo:</strong> { this.state.myInfoCalendar.email }</p>
-                                <p><strong>Servicio</strong> { this.state.myInfoCalendar.service }</p>
-                            </div>;
+            myInfoContent = this.state.myInfoCalendar.map( value => {
+                return(
+                    <div key={value.id}>
+                        <p><strong>Cliente:</strong> { value.mydate.customer.name } / <strong>Teléfono:</strong> { value.mydate.customer.phone } / <strong>Servicio:</strong> { value.mydate.service }</p>
+                        <p><strong>Correo:</strong> { value.mydate.customer.email }</p>
+                        <p><strong>Nota:</strong> { value.mydate.customer.note }</p>
+                        <hr />
+                    </div>
+                );
+            });
+
         }
+
+        let myOption = this.state.myCustomer.map( value => {
+            return(
+                <option key={value.id} value={value.id}>{ value.name }</option>
+            );
+        });
 
         return (
             <Container>
@@ -332,45 +359,19 @@ export default class Calendar extends Component {
                         </Table>
                     </Col>
                 </Row>
-                <Modal show={this.state.showModal} onHide={this.handleCloseModal}>
+                <Modal show={this.state.showModal} onHide={this.handleCloseModal} size="lg" centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Info Cita | <Badge variant="primary">{ this.state.currentDayName }</Badge> - <Badge variant="success">{ this.state.currentHour }</Badge> - <Badge variant="dark">{ this.state.currentDay }</Badge></Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Container>
-                            <Row>
-                                <Col>
-                                    <Card>
-                                        <Card.Header>Crear Citas</Card.Header>
-                                        <Card.Body>
-                                            <Form.Group controlId="myFormCustomer">
-                                                <Form.Label>Mis Clientes</Form.Label>
-                                                <Form.Control as={'select'} value={this.state.myForm.customerID} onChange={this.handleChangeSelect}>
-                                                    <option value={'1'}>1</option>
-                                                    <option value={'2'}>2</option>
-                                                    <option value={'3'}>3</option>
-                                                    <option value={'4'}>4</option>
-                                                    <option value={'5'}>5</option>
-                                                </Form.Control>
-                                            </Form.Group>
-                                            <Form.Group controlId="myFormService">
-                                                <Form.Label>Servicio</Form.Label>
-                                                <Form.Control type="text" placeholder="Servicio" value={this.state.myForm.service} onChange={this.hanldeChangeInput} />
-                                            </Form.Group>
-                                            <Button onClick={this.handleSave} variant="primary" type="button">
-                                                Guardar
-                                            </Button>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                            <hr />
+
                             <Row>
                                 <Col>
                                 <Card>
-                                    <Card.Header>Mi Citas</Card.Header>
+                                    <Card.Header>Mis Citas</Card.Header>
                                     <Card.Body>
-                                        { this.state.myInfoCalendar !== null ? myInfoContent : '' }
+                                        { myInfoContent }
                                     </Card.Body>
                                 </Card>
                                 </Col>

@@ -11,9 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserSeeder::class);
-        // $this->call(CustomerSeeder::class);
-        // factory(App\Customer::class, 50)->create();
+        $this->call(UserSeeder::class);
+        factory(App\Customer::class, 50)->create();
+        $this->call(DateSeeder::class);
         $this->call(CalendarSeeder::class);
     }
 }

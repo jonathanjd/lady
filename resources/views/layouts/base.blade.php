@@ -86,6 +86,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ route('date.create') }}" class="nav-link">
+              <i class="nav-icon fas fa-calendar-day"></i>
+              <p>
+                Citas
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('calendar.index') }}" class="nav-link">
               <i class="nav-icon fas fa-calendar"></i>
               <p>
