@@ -299,8 +299,12 @@ export default class Calendar extends Component {
             }
 
             this.setState({
-                currentMonth: myMonth
+                currentMonth: myMonth,
+                startDate: this.state.weekDay[0].format('YYYY-MM-DD'),
+                endDate: this.state.weekDay[6].format('YYYY-MM-DD'),
             });
+
+            this.fetchCalendar();
         }, 300);
     }
 
@@ -420,8 +424,13 @@ export default class Calendar extends Component {
             }
 
             this.setState({
-                currentMonth: myMonth
+                currentMonth: myMonth,
+                startDate: this.state.weekDay[0].format('YYYY-MM-DD'),
+                endDate: this.state.weekDay[6].format('YYYY-MM-DD'),
             });
+
+            this.fetchCalendar();
+
         }, 300);
 
     }
@@ -557,8 +566,13 @@ export default class Calendar extends Component {
                         itemValue = item;
                         return <FontAwesomeIcon style={{'padding': '1'}} icon={faUser} key={item.id} color={ myColor } />;
                     } else {
+                        if (myDate === myDateTD && myHour === hour + ':00:00') {
+                            itemValue = item;
+                            return <FontAwesomeIcon style={{'padding': '1'}} icon={faUser} key={item.id} color={ myColor } />;
+                        } else {
+                            return '';
+                        }
 
-                        return '';
                     }
                 });
 

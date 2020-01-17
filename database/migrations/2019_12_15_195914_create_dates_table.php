@@ -16,7 +16,7 @@ class CreateDatesTable extends Migration
         Schema::create('dates', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('users');
+            $table->foreign('customer_id')->references('id')->on('customers');
             $table->string('service');
             $table->enum('status', ['yes', 'no', 'programmed']);
             $table->text('note')->nullable();
