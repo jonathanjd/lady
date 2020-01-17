@@ -41,8 +41,6 @@ class CustomerController extends Controller
         //Validate
         $this->validate($request, [
             'name' => 'required',
-            'age' => 'required',
-            'email' => 'required',
             'phone' => 'required',
         ]);
 

@@ -2,6 +2,7 @@
 
 use App\Calendar;
 use App\Customer;
+use App\Date;
 use Illuminate\Http\Request;
 
 /*
@@ -42,6 +43,21 @@ Route::get('/list-customer', function(){
     return response()->json([
         'listCustomer' => $listCustomer
     ], 200);
+
+});
+
+Route::post('/status/change', function(Request $request){
+
+    $myDate = Date::find($request->id);
+
+    $myDate->status = $request->status;
+
+    $myDate->save();
+
+    return response()->json([
+        'status' => 'success'
+    ], 200);
+
 
 });
 

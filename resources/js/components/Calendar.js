@@ -21,6 +21,46 @@ export default class Calendar extends Component {
 
         }
 
+        let myMonth = '';
+        switch (moment().format('M')) {
+            case '1':
+                myMonth = 'Enero';
+                break;
+            case '2':
+                myMonth = 'Febrero'
+                break;
+            case '3':
+                myMonth = 'Marzo'
+                break;
+            case '4':
+                myMonth = 'Abril'
+                break;
+            case '5':
+                myMonth = 'Mayo'
+                break;
+            case '6':
+                myMonth = 'Junio'
+                break;
+            case '7':
+                myMonth = 'Julio'
+                break;
+            case '8':
+                myMonth = 'Agosto'
+                break;
+            case '9':
+                myMonth = 'Septiembre'
+                break;
+            case '10':
+                myMonth = 'Octubre'
+                break;
+            case '11':
+                myMonth = 'Noviembre'
+                break;
+            case '12':
+                myMonth = 'Diciembre'
+                break;
+        }
+
         this.state = {
             weekDay: myArrayDay,
             hours: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],
@@ -38,7 +78,8 @@ export default class Calendar extends Component {
             myForm: {
                 customerID: '1',
                 service: ''
-            }
+            },
+            currentMonth: myMonth,
         };
 
         this.handleAddWeek = this.handleAddWeek.bind(this);
@@ -48,6 +89,7 @@ export default class Calendar extends Component {
         this.handleSave = this.handleSave.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.hanldeChangeInput = this.hanldeChangeInput.bind(this);
+        this.handleChangeStatus = this.handleChangeStatus.bind(this);
     }
 
     handleShowToast() {
@@ -77,10 +119,6 @@ export default class Calendar extends Component {
     }
 
     handleOpenModal(value1, value2) {
-
-        console.log('Open Modal')
-        console.log(value1)
-        console.log(value2)
 
         this.setState(
             { myForm:{customerID: '1', service: ''} }
@@ -165,6 +203,105 @@ export default class Calendar extends Component {
             weekDay: myArrayDate
         });
 
+
+        setTimeout(() => {
+            let startMonth = this.state.weekDay[0];
+            let endMonth = this.state.weekDay[6];
+
+
+            endMonth = endMonth.format('M')
+
+            let myMonth = '';
+            switch (startMonth.format('M')) {
+                case '1':
+                    myMonth = 'Enero';
+                    if (endMonth == '2') {
+                        myMonth = 'Enero - Febrero';
+                    }
+
+                    break;
+                case '2':
+                    myMonth = 'Febrero'
+                    console.log('Febrero ' + this.state.weekDay[6].format('DD-MM'))
+                    if (endMonth == '3') {
+                        myMonth = 'Febrero - Marzo';
+                    }
+                    break;
+                case '3':
+                    myMonth = 'Marzo'
+
+                    if (endMonth == '4') {
+                        myMonth = 'Marzo - Abril';
+                    }
+                    break;
+                case '4':
+                    myMonth = 'Abril'
+
+                    if (endMonth == '5') {
+                        myMonth = 'Abril - Mayo';
+                    }
+                    break;
+                case '5':
+                    myMonth = 'Mayo'
+
+                    if (endMonth == '6') {
+                        myMonth = 'Mayo - Junio';
+                    }
+                    break;
+                case '6':
+                    myMonth = 'Junio'
+
+                    if (endMonth == '7') {
+                        myMonth = 'Junio - Julio';
+                    }
+                    break;
+                case '7':
+                    myMonth = 'Julio'
+
+                    if (endMonth == '8') {
+                        myMonth = 'Julio - Agosto';
+                    }
+                    break;
+                case '8':
+                    myMonth = 'Agosto'
+
+                    if (endMonth == '9') {
+                        myMonth = 'Agosto - Septiembre';
+                    }
+                    break;
+                case '9':
+                    myMonth = 'Septiembre'
+
+                    if (endMonth == '10') {
+                        myMonth = 'Septiembre - Octubre';
+                    }
+                    break;
+                case '10':
+                    myMonth = 'Octubre'
+
+                    if (endMonth == '11') {
+                        myMonth = 'Octubre - Noviembre';
+                    }
+                    break;
+                case '11':
+                    myMonth = 'Noviembre'
+
+                    if (endMonth == '12') {
+                        myMonth = 'Noviembre - Diciembre';
+                    }
+                    break;
+                case '12':
+                    myMonth = 'Diciembre'
+                    if (endMonth == '1') {
+                        myMonth = 'Diciembre - Enero';
+                    }
+                    break;
+            }
+
+            this.setState({
+                currentMonth: myMonth
+            });
+        }, 300);
     }
 
     handleLessWeek() {
@@ -187,6 +324,106 @@ export default class Calendar extends Component {
         this.setState({
             weekDay: myArrayDate.reverse()
         });
+
+        setTimeout(() => {
+            let startMonth = this.state.weekDay[0];
+            let endMonth = this.state.weekDay[6];
+
+
+            endMonth = endMonth.format('M')
+
+            let myMonth = '';
+            switch (startMonth.format('M')) {
+                case '1':
+                    myMonth = 'Enero';
+                    if (endMonth == '2') {
+                        myMonth = 'Enero - Febrero';
+                    }
+
+                    break;
+                case '2':
+                    myMonth = 'Febrero'
+                    console.log('Febrero ' + this.state.weekDay[6].format('DD-MM'))
+                    if (endMonth == '3') {
+                        myMonth = 'Febrero - Marzo';
+                    }
+                    break;
+                case '3':
+                    myMonth = 'Marzo'
+
+                    if (endMonth == '4') {
+                        myMonth = 'Marzo - Abril';
+                    }
+                    break;
+                case '4':
+                    myMonth = 'Abril'
+
+                    if (endMonth == '5') {
+                        myMonth = 'Abril - Mayo';
+                    }
+                    break;
+                case '5':
+                    myMonth = 'Mayo'
+
+                    if (endMonth == '6') {
+                        myMonth = 'Mayo - Junio';
+                    }
+                    break;
+                case '6':
+                    myMonth = 'Junio'
+
+                    if (endMonth == '7') {
+                        myMonth = 'Junio - Julio';
+                    }
+                    break;
+                case '7':
+                    myMonth = 'Julio'
+
+                    if (endMonth == '8') {
+                        myMonth = 'Julio - Agosto';
+                    }
+                    break;
+                case '8':
+                    myMonth = 'Agosto'
+
+                    if (endMonth == '9') {
+                        myMonth = 'Agosto - Septiembre';
+                    }
+                    break;
+                case '9':
+                    myMonth = 'Septiembre'
+
+                    if (endMonth == '10') {
+                        myMonth = 'Septiembre - Octubre';
+                    }
+                    break;
+                case '10':
+                    myMonth = 'Octubre'
+
+                    if (endMonth == '11') {
+                        myMonth = 'Octubre - Noviembre';
+                    }
+                    break;
+                case '11':
+                    myMonth = 'Noviembre'
+
+                    if (endMonth == '12') {
+                        myMonth = 'Noviembre - Diciembre';
+                    }
+                    break;
+                case '12':
+                    myMonth = 'Diciembre'
+                    if (endMonth == '1') {
+                        myMonth = 'Diciembre - Enero';
+                    }
+                    break;
+            }
+
+            this.setState({
+                currentMonth: myMonth
+            });
+        }, 300);
+
     }
 
     componentDidMount() {
@@ -224,6 +461,34 @@ export default class Calendar extends Component {
                     myCalendar: myJson.listCalendar
                 });
         });
+    }
+
+    handleChangeStatus(event, id, myHour, myDate) {
+
+        let myValue = event.target.value;
+
+        console.log(myValue)
+        console.log(id)
+
+
+        let data = {
+            id,
+            status: myValue
+        }
+        fetch('/api/status/change', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers:{
+                'Content-Type': 'application/json'
+              }
+        }).then( response => {
+            return response.json();
+        }).then(myJson => {
+            console.log(myJson)
+            this.fetchMyCalendar(myHour, myDate)
+            this.fetchCalendar();
+        })
+
     }
 
 
@@ -277,10 +542,20 @@ export default class Calendar extends Component {
                     let myDate = moment(item.date).format('DD-MM-YYYY');
                     let myHour = item.hour;
                     let myDateTD = value.format('DD-MM-YYYY');
+                    let myColor = 'blue';
+
+                    switch (item.mydate.status) {
+                        case 'yes':
+                                myColor = 'green';
+                            break;
+                            case 'no':
+                                myColor = 'red';
+                            break;
+                    }
 
                     if (myDate === myDateTD && myHour === '0' + hour + ':00:00' ) {
                         itemValue = item;
-                        return <FontAwesomeIcon style={{'padding': '1'}} icon={faUser} key={item.id} color="green" />;
+                        return <FontAwesomeIcon style={{'padding': '1'}} icon={faUser} key={item.id} color={ myColor } />;
                     } else {
 
                         return '';
@@ -318,6 +593,14 @@ export default class Calendar extends Component {
                         <p><strong>Cliente:</strong> { value.mydate.customer.name } / <strong>Teléfono:</strong> { value.mydate.customer.phone } / <strong>Servicio:</strong> { value.mydate.service }</p>
                         <p><strong>Correo:</strong> { value.mydate.customer.email }</p>
                         <p><strong>Nota:</strong> { value.mydate.customer.note }</p>
+                        <Form.Group as={Col} controlId="formState">
+                            <Form.Label>State</Form.Label>
+                            <Form.Control as="select" value={value.mydate.status} onChange={(e) => this.handleChangeStatus(e, value.mydate.id, value.hour, value.date)}>
+                                <option value="programmed">Programado</option>
+                                <option value="yes">Asistió</option>
+                                <option value="no">No Asistió</option>
+                            </Form.Control>
+                        </Form.Group>
                         <hr />
                     </div>
                 );
@@ -338,7 +621,7 @@ export default class Calendar extends Component {
                         <Button onClick={this.handleLessWeek} variant="info"> {'<'} </Button>
                     </Col>
                     <Col className={'text-center'}>
-                        <h3>Enero</h3>
+                        <h3>{ this.state.currentMonth }</h3>
                     </Col>
                     <Col className={'text-center'}>
                     <Button onClick={this.handleAddWeek} variant="info"> {'>'} </Button>
